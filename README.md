@@ -4,6 +4,39 @@
 
 [English](README-EN.md)|中文
 
+> [!IMPORTANT]
+>
+> 由于原有的Telegraph API接口被官方关闭，需要将上传渠道切换至Telegram Channel，请按照文档中的部署要求设置`TG_Bot_Token`和`TG_Chat_ID`，否则将无法正常使用上传功能。
+
+## 如何获取Telegram的`Bot_Token`和`Chat_ID`
+
+如果您还没有Telegram账户，请先创建一个。接着，按照以下步骤操作以获取`BOT_TOKEN`和`CHAT_ID`：
+
+1. **获取`Bot_Token`**
+   - 在Telegram中，向[@BotFather](https://t.me/BotFather)发送命令`/newbot`，根据提示依次输入您的机器人名称和用户名。成功创建机器人后，您将会收到一个`BOT_TOKEN`，用于与Telegram API进行交互。
+   
+![202409071744569](https://github.com/user-attachments/assets/04f01289-205c-43e0-ba03-d9ab3465e349)
+
+2. **设置机器人为频道管理员**
+   - 创建一个新的频道（Channel），进入该频道后，选择频道设置。将刚刚创建的机器人添加为频道管理员，这样机器人才能发送消息。
+
+![202409071758534](https://github.com/user-attachments/assets/cedea4c7-8b31-42e0-98a1-8a72ff69528f)
+   
+![202409071758796](https://github.com/user-attachments/assets/16393802-17eb-4ae4-a758-f0fdb7aaebc4)
+
+
+3. **获取`Chat_ID`**
+   - 通过[@VersaToolsBot](https://t.me/VersaToolsBot)获取您的频道ID。向该机器人发送消息，按照指示操作，最后您将得到`CHAT_ID`（即频道的ID）。
+   - 或者通过[@GetTheirIDBot](https://t.me/GetTheirIDBot)获取您的频道ID。向该机器人发送消息，按照指示操作，最后您将得到`CHAT_ID`（即频道的ID）。
+
+   ![202409071751619](https://github.com/user-attachments/assets/59fe8b20-c969-4d13-8d46-e58c0e8b9e79)
+
+最后去Cloudflare Pages后台设置相关的环境变量（注：修改环境变量后，需要重新部署才能生效）
+| 环境变量        | 示例值                    | 说明                                                                                   |
+|-----------------|---------------------------|----------------------------------------------------------------------------------------|
+| `TG_Bot_Token`   | `123468:AAxxxGKrn5`        | 从[@BotFather](https://t.me/BotFather)获取的Telegram Bot Token。                        |
+| `TG_Chat_ID`     | `-1234567`                 | 频道的ID，确保TG Bot是该频道或群组的管理员。 |
+
 ## 如何部署
 
 ### 提前准备
@@ -20,7 +53,7 @@
 
 ![1](https://telegraph-image.pages.dev/file/8d4ef9b7761a25821d9c2.png)
 
-1. 按照页面提示输入项目名称，选择需要连接的 git 仓库，点击`部署站点`即可完成部署
+3. 按照页面提示输入项目名称，选择需要连接的 git 仓库，点击`部署站点`即可完成部署
 
 ## 特性
 
@@ -65,6 +98,36 @@
 Hostloc @feixiang 和@乌拉擦 提供的思路和代码
 
 ## 更新日志
+2024 年 7 月 6 日--后台管理页面更新
+
+- 支持两个新的管理页面视图（网格视图和瀑布流）
+
+    1、网格视图，感谢@DJChanahCJD 提交的代码
+        支持批量删除/复制链接
+        支持按时间倒序排序
+        支持分页功能
+        ![](https://camo.githubusercontent.com/a0551aa92f39517f0b30d86883882c1af4c9b3486e540c7750af4dbe707371fa/68747470733a2f2f696d6774632d3369312e70616765732e6465762f66696c652f6262616438336561616630356635333731363237322e706e67)
+    2、瀑布流视图，感谢@panther125 提交的代码
+        ![](https://camo.githubusercontent.com/63d64491afc5654186248141bd343c363808bf8a77d3b879ffc1b8e57e5ac85d/68747470733a2f2f696d6167652e67696e636f64652e6963752f66696c652f3930346435373737613363306530613936623963642e706e67)
+
+- 添加自动更新支持
+
+    现在fork的项目能够自动和上游仓库同步最新的更改，自动实装最新的项目功能，感谢 @bian2022
+
+    打开自动更新步骤：
+        当你 fork 项目之后，由于 Github 的限制，需要手动去你 fork 后的项目的 Actions 页面启用 Workflows，并启用 Upstream Sync Action，启用之后即可开启每小时定时自动更新：
+        ![](https://im.gurl.eu.org/file/f27ff07538de656844923.png)
+        ![](https://im.gurl.eu.org/file/063b360119211c9b984c0.png)
+    `如果你遇到了 Upstream Sync 执行错误，请手动 Sync Fork 一次！`
+
+    手动更新代码
+
+    如果你想让手动立即更新，可以查看 [Github 的文档](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) 了解如何让 fork 的项目与上游代码同步。
+
+    你可以 star/watch 本项目或者 follow 作者来及时获得新功能更新通知。
+- 添加远端遥测
+
+    可通过添加`disable_telemetry`环境变量退出遥测
 
 2023 年 1 月 18 日--图片管理功能更新
 
